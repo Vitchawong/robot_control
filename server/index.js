@@ -5,6 +5,7 @@ const { saveTelemetry, getLatest, getHistory } = require("./db/database");
 const app = express();
 app.use(cors());
 app.use(express.json());
+require("./mqtt/collector");
 
 app.post("/telemetry", async (req, res) => {
     try {
@@ -37,4 +38,4 @@ app.get("/history", async (req, res) => {
   }
 });
 
-app.listen(3000, () => console.log("API running on http://localhost:3000"));
+app.listen(3000);

@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { useEffect, useState } from 'react';
 
-const API_URL = "http://192.168.1.34:3000"; // <-- CHANGE to your PC IP
+const API_URL = "http://192.168.1.35:3000"; // <-- CHANGE to your PC IP
 
 export default function App() {
   const [data, setData] = useState(null);
