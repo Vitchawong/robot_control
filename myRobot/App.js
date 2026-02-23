@@ -1,8 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { useEffect, useState } from 'react';
+import ControlButtons from "./components/ControlButtons";
 
-const API_URL = "http://192.168.1.35:3000"; // <-- CHANGE to your PC IP
+const API_URL = "http://192.168.1.35:3000";
 
 export default function App() {
   const [data, setData] = useState(null);
@@ -22,8 +23,6 @@ export default function App() {
 
   useEffect(() => {
     fetchLatest();
-
-    // refresh every 2 seconds (fake real-time)
     const interval = setInterval(fetchLatest, 2000);
     return () => clearInterval(interval);
   }, []);
@@ -39,10 +38,14 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Robot Sensor Info</Text>
-      <Text>Temp: {data?.temp}</Text>
-      <Text>Air Pollution: {data?.airpollution}</Text>
-      <Text>Speed: {data?.speed}</Text>
-      <Text>Time: {data?.created_at}</Text>
+      <Text>Temp: {data?.temp ?? "--"}</Text>
+      <Text>Air Pollution: {data?.airpollution ?? "--"}</Text>
+      <Text>Speed: {data?.speed ?? "--"}</Text>
+      <Text>Time: {data?.created_at ?? "--"}</Text>
+
+      {/* Buttons are now in another file */}
+      <ControlButtons apiUrl={API_URL} deviceId="robot01" />
+
       <StatusBar style="auto" />
     </View>
   );
