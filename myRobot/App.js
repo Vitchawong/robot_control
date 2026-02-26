@@ -2,8 +2,12 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { useEffect, useState } from 'react';
 import ControlButtons from "./components/ControlButtons";
+import { WebView } from "react-native-webview";
 
-const API_URL = "http://192.168.1.35:3000";
+const API_URL = "http://10.54.12.38:3000";
+
+// PUT YOUR ESP32-CAM STREAM URL HERE:
+const CAM_STREAM_URL = "http://10.54.12.113:81/stream"; // <-- change IP
 
 export default function App() {
   const [data, setData] = useState(null);
@@ -35,17 +39,37 @@ export default function App() {
     );
   }
 
+  const camHtml = `
+    <html>
+      <head><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+      <body style="margin:0; background:#000; display:flex; align-items:center; justify-content:center;">
+        <img src="${CAM_STREAM_URL}" style="width:100%; height:auto;" />
+      </body>
+    </html>
+  `;
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Robot Sensor Info</Text>
+
+      {/* Camera stream */}
+      <View style={styles.cameraBox}>
+        <WebView
+          originWhitelist={["*"]}
+          source={{ html: camHtml }}
+          javaScriptEnabled
+          allowsInlineMediaPlayback
+          mediaPlaybackRequiresUserAction={false}
+        />
+      </View>
+
+      {/* Sensor values */}
       <Text>Temp: {data?.temp ?? "--"}</Text>
       <Text>Air Pollution: {data?.airpollution ?? "--"}</Text>
       <Text>Speed: {data?.speed ?? "--"}</Text>
       <Text>Time: {data?.created_at ?? "--"}</Text>
 
-      {/* Buttons are now in another file */}
       <ControlButtons apiUrl={API_URL} deviceId="robot01" />
-
       <StatusBar style="auto" />
     </View>
   );
@@ -57,10 +81,19 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingTop: 40,
   },
   title: {
     fontSize: 22,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 12,
+  },
+  cameraBox: {
+    width: "92%",
+    height: 220,          // adjust
+    backgroundColor: "#000",
+    borderRadius: 12,
+    overflow: "hidden",
+    marginBottom: 12,
   },
 });

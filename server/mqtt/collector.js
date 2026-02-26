@@ -4,7 +4,7 @@ const mqtt = require("mqtt");
 const mysql = require("mysql2/promise");
 
 const MQTT_URL = `mqtt://${process.env.MQTT_HOST || "localhost"}:${process.env.MQTT_PORT || 1883}`;
-const TOPIC = process.env.MQTT_TOPIC || "robot/telemetry";
+const TOPIC = process.env.MQTT_TOPIC || "robot/telemetry/ohm123";
 
 const pool = mysql.createPool({
   host: process.env.DB_HOST || "localhost",
