@@ -1,5 +1,4 @@
 require("dotenv").config();
-
 const mysql = require("mysql2/promise");
 
 const pool = mysql.createPool({
@@ -22,17 +21,29 @@ pool.getConnection()
     console.error("❌ MySQL connection failed:", err.message);
   });
 
-async function saveTelemetry({ device_id, temp, airpollution, speed }) {
+/* =========================
+   SAVE TELEMETRY
+========================= */
+async function saveTelemetry({ device_id, temp, pm1, pm25, speed }) {
   await pool.execute(
-    `INSERT INTO telemetry (device_id, temp, airpollution, speed)
-     VALUES (?, ?, ?, ?)`,
-    [device_id, temp ?? null, airpollution ?? null, speed ?? null]
+    `INSERT INTO telemetry (device_id, temp, pm1, pm25, speed)
+     VALUES (?, ?, ?, ?, ?)`,
+    [
+      device_id,
+      temp ?? null,
+      pm1 ?? null,
+      pm25 ?? null,
+      speed ?? null
+    ]
   );
 }
 
+/* =========================
+   GET LATEST
+========================= */
 async function getLatest(device_id) {
   const [rows] = await pool.execute(
-    `SELECT device_id, temp, airpollution, speed, created_at
+    `SELECT device_id, temp, pm1, pm25, pm10, speed, created_at
      FROM telemetry
      WHERE device_id = ?
      ORDER BY id DESC
@@ -42,16 +53,21 @@ async function getLatest(device_id) {
   return rows[0] || {};
 }
 
+/* =========================
+   GET HISTORY
+========================= */
 async function getHistory(device_id, limit = 50) {
   const lim = Math.min(Number(limit) || 50, 500);
+
   const [rows] = await pool.execute(
-    `SELECT device_id, temp, airpollution, speed, created_at
+    `SELECT device_id, temp, pm1, pm25, speed, created_at
      FROM telemetry
      WHERE device_id = ?
      ORDER BY id DESC
      LIMIT ?`,
     [device_id, lim]
   );
+
   return rows;
 }
 

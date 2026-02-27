@@ -25,16 +25,32 @@ mqttClient.on("error", (err) => {
 });
 
 app.post("/telemetry", async (req, res) => {
-    try {
-      const { device_id = "robot01", temp, airpollution, speed } = req.body || {};
-      await saveTelemetry({ device_id, temp, airpollution, speed });
-      res.json({ ok: true });
-    } catch (e) {
-      console.error("DB insert failed:", e); // <-- add this
-      res.status(500).json({ error: "DB insert failed", details: e.message });
-    }
-  });
-  
+  try {
+    const {
+      device_id = "robot01",
+      temp,
+      speed,
+      pm1,
+      pm25,
+      pm10
+    } = req.body || {};
+
+    await saveTelemetry({
+      device_id,
+      temp,
+      speed,
+      pm1,
+      pm25,
+      pm10
+    });
+
+    res.json({ ok: true });
+  } catch (e) {
+    console.error("DB insert failed:", e);
+    res.status(500).json({ error: "DB insert failed", details: e.message });
+  }
+});
+
 
 app.get("/latest", async (req, res) => {
   try {
@@ -44,6 +60,7 @@ app.get("/latest", async (req, res) => {
     res.status(500).json({ error: "DB read failed" });
   }
 });
+
 
 app.get("/history", async (req, res) => {
   try {

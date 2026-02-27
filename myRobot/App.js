@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import ControlButtons from "./components/ControlButtons";
 import { WebView } from "react-native-webview";
 
-const API_URL = "http://10.54.12.38:3000";
+const API_URL = "http://10.54.12.40:3000";
 
 // PUT YOUR ESP32-CAM STREAM URL HERE:
 const CAM_STREAM_URL = "http://10.54.12.113:81/stream"; // <-- change IP
@@ -64,11 +64,12 @@ export default function App() {
       </View>
 
       {/* Sensor values */}
-      <Text>Temp: {data?.temp ?? "--"}</Text>
-      <Text>Air Pollution: {data?.airpollution ?? "--"}</Text>
-      <Text>Speed: {data?.speed ?? "--"}</Text>
-      <Text>Time: {data?.created_at ?? "--"}</Text>
-
+<Text>Temp: {data?.temp ?? "--"} °C</Text>
+<Text>PM1.0: {data?.pm1 ?? "--"} µg/m³</Text>
+<Text>PM2.5: {data?.pm25 ?? "--"} µg/m³</Text>
+<Text>PM10: {data?.pm10 ?? "--"} µg/m³</Text>
+<Text>Speed: {data?.speed ?? "--"}</Text>
+<Text>Time: {data?.created_at ?? "--"}</Text>
       <ControlButtons apiUrl={API_URL} deviceId="robot01" />
       <StatusBar style="auto" />
     </View>
