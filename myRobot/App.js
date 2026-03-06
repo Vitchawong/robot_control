@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import ControlButtons from "./components/ControlButtons";
 import { WebView } from "react-native-webview";
 
-const API_URL = "http://10.54.12.38:3000";
+const API_URL = "http://10.54.12.40:3000";
 
 // PUT YOUR ESP32-CAM STREAM URL HERE:
 const CAM_STREAM_URL = "http://10.54.12.113:81/stream"; // <-- change IP

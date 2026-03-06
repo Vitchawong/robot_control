@@ -26,6 +26,13 @@ export default function ControlButtons({ apiUrl, deviceId = "robot01" }) {
       <Button title="Backward" onPress={() => sendCmd("backward")} />
       <Button title="Left" onPress={() => sendCmd("left")} />
       <Button title="Right" onPress={() => sendCmd("right")} />
+
+      {/* STOP BUTTON */}
+      <Button
+        title="STOP"
+        color="red"
+        onPress={() => sendCmd("stop")}
+      />
     </View>
   );
 }
